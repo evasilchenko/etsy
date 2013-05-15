@@ -7,10 +7,21 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	</head>
 	<body>
-		<div id="js-current-environment"></div>
-		<input type="text" id="js-search-box"/>
-		<button id="js-search">Search</button>
-		<img id="js-loading-gif" src="images/ajax-loader.gif" class="hidden"/>
-		<div id="js-results"></div>
+		<div class="main-container">
+			<div class="header"></div>
+			<div class="content">
+				<div class="search-container">
+					<div>
+						Current Environment:
+						<span id="js-current-environment"></span>
+					</div>
+					<input type="text" id="js-search-box"/>
+					<button id="js-search">Search</button>
+					<img id="js-loading-gif" src="images/ajax-loader.gif" class="hidden"/>
+				</div>
+				<div id="js-results"></div>
+			</div>
+			<div class="footer"></div>
+		</div>
 	</body>
 </html>

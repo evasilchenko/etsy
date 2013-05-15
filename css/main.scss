@@ -1,3 +1,65 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
 .hidden {
 	display: none;
+}
+
+.main-container {
+	position: relative;
+	width: 1000px;
+	min-height: 640px;
+	margin: 0px auto;
+	text-align: left;
+
+	.header {
+		min-height: 20px;
+	}
+
+	.content {
+		position: absolute;
+		height: 60px;
+		top: 50%;
+		margin-top: -30px;
+		overflow: hidden;
+		
+		#js-search-box {
+			width: 800px;
+		}
+
+		.row {
+
+			div {
+				display: inline-block;
+				margin: 0 10px;
+			}
+
+			.img-container {
+				padding: 10px;
+				vertical-align: middle;
+			}
+		}
+
+		#js-results {
+			overflow: hidden;
+
+			&.expanded {
+				overflow-y: scroll;
+				overflow-x: hidden;
+			}
+			
+			max-height: 540px;
+		}
+
+		.search-container {
+			padding: 10px 0px;
+		}
+	}
+
+	.footer {
+		min-height: 20px;
+	}
 }

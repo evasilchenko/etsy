@@ -29,9 +29,10 @@ SmartStore.EtsyApi.sort_options = {
 // if the api were to change it's param names, this list would have to be updated.
 // Also, this list is not complete and can be modified in any way to help add future functionality
 SmartStore.EtsyApi.params = {
-	limit: 10,
+	limit: 50,
 	page: 1,
 	keywords: "",
+	includes: "MainImage",
 	sort_on: SmartStore.EtsyApi.sort_options.sort_on_options[0],
 	sort_order: SmartStore.EtsyApi.sort_options.sort_order_options[0]
 }
@@ -50,8 +51,9 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 	// This is the main call for getting the active items on Etsy
 	this.getActiveItems = function (params) {
 		var etsyUrl = this.baseUrl + "/listings/active.js?callback=?&api_key=" + this.getKey();
-		SmartStore.ui.$results_container.text("Searching Etsy ... ");
+		SmartStore.ui.$results_container.empty();
 
+		// Loop through each parameter and add it to the etsy api url
 		for (param in params) {
 			if (!params.hasOwnProperty(param)) {
 				continue;
@@ -78,17 +80,23 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 				// Loop through the results and add them to an array
 				// After the loop, append entire array to dom container (to reduce lockups)
 				for (result in data.results) {
-					if (!data.results.hasOwnProperty(result)) {
+
+					// Skip over properties that don't belong to this objects and results with errors
+					if (!data.results.hasOwnProperty(result) || data.results[result].error_messages) {
 						continue;
 					}
 
-					var $result = $("<div/>", { "class": "row" });
-					$result.text("Title:" + data.results[result].title + " Price:" + data.results[result].price);
-					results_array.push($result);
+					var $row = $("<div/>", { "class": "row" });
+					var $img = $("<img/>", { "src": data.results[result].MainImage.url_75x75 });
+					var $imgContainer = $("<div/>", { "class": "img-container" }).append($img);
+					var $titleContainer = $("<div/>", { "class": "title-container" }).text(data.results[result].title);
+					var $priceContainer = $("<div/>", { "class": "price-container" }).text(data.results[result].price);
+
+					$row.append([ $imgContainer, $titleContainer, $priceContainer ]);
+					results_array.push($row);
 				}
 
 				// Unfotunately have to call UI here because of the ajax call
-				SmartStore.ui.$results_container.empty();
 				SmartStore.ui.$results_container.append(results_array);
 				SmartStore.ui.$search_button.removeClass("hidden");
 				SmartStore.ui.$loading_gif.addClass("hidden");
