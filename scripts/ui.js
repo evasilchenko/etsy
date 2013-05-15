@@ -62,8 +62,16 @@ SmartStore.UI = function () {
 		this.$sort_container = $("#js-sort-container");
 		this.$sort_on_select = $("#js-sort-on");
 		this.$reverse_sort_order = $("#js-sort-order");
-		this.$details_container = $("#js-details-container");
 		this.$environment_container.text(this.apiManager.mode.title);
+
+		this.$details_container = $("#js-details-container");
+		this.$details_close = $("#js-details-close");
+		this.$details_who_made = $("#js-details-who-made");
+		this.$details_title = $("#js-details-title");
+		this.$details_image_container = $("#js-details-image-container");
+		this.$details_description = $("#js-details-description");
+		this.$details_price = $("#js-details-price");
+		this.$details_score = $("#js-details-score");
 
 		// Search the Etsy api after the search button is clicked
 		this.$search_button.click(function () {
@@ -76,7 +84,30 @@ SmartStore.UI = function () {
 
 		// Bind to the click event all future view details buttons
 		this.$content_box.on('click', this.detailsClass, function (e) {
-			alert(that.apiManager.results[$(this).attr('id')].title);
+			var row = that.apiManager.resultsMapper[$(this).attr('id')];
+
+			that.$details_who_made.text(row.who_made ? row.who_made : '');
+			that.$details_title.text(row.title);
+			that.$details_image_container.empty();
+			that.$details_image_container.append($("<img/>", { src: row.MainImage["url_170x135"] }));
+			that.$details_description.text(row.description);
+			that.$details_price.text(row.price ? '$' + row.price : '');
+			that.$details_score.text("Score: " + row.featured_rank);
+
+			that.$results_container.addClass("hidden");
+			that.$details_container.removeClass("hidden");
+			that.$details_container.animate({
+				left: "-=870px"
+			});
+		});
+
+		this.$details_close.click(function () {
+			that.$details_container.animate({
+				left: "+=870px"
+			}, 600, function () {
+				that.$details_container.addClass("hidden");
+				that.$results_container.removeClass("hidden");
+			});
 		});
 
 		// Go through and set the options for the categories sort using
@@ -98,12 +129,20 @@ SmartStore.UI = function () {
 			this.$sort_container.removeClass("hidden");
 		}
 
-		// Set the event handlers for the sort controls
+		// Set the event handlers for the sort controls, don't fire if in details view
 		this.$sort_on_select.change(function () {
+			if(!that.$details_container.hasClass("hidden")) {
+				return;
+			}
+
 			that.apiManager.sortListByCategory(this.value);
 		});
 
 		this.$reverse_sort_order.click(function () {
+			if(!that.$details_container.hasClass("hidden")) {
+				return;
+			}
+
 			that.apiManager.reverseSortOrder();
 		});
 	}

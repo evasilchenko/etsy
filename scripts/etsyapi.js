@@ -42,6 +42,7 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 	this.mode = mode || SmartStore.EtsyApi.modes.sandbox;
 	this.baseUrl = this.mode.url;
 	this.results = [];
+	this.resultsMapper = {};
 	this.rowClass = "row";
 	this.currentSortOn = SmartStore.EtsyApi.sort_options.sort_on_options[0];
 	this.currentOrderOn = SmartStore.EtsyApi.sort_options.sort_order_options[0];
@@ -80,7 +81,7 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 					throw new Error(data.error);
 				}
 
-				var results_array = [];
+				var results_array = [], increment = 0;
 
 				// Loop through the results and add them to an array
 				// After the loop, append entire array to dom container (to reduce lockups)
@@ -95,6 +96,7 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 					$row.created_on = data.results[result].creation_tsz;
 					$row.score = data.results[result].featured_rank;
 					$row.price = data.results[result].price;
+					$row.listing_id = data.results[result].listing_id;
 					var $img = $("<img/>", { "src": data.results[result].MainImage.url_75x75 });
 					var $imgContainer = $("<div/>", { "class": "img-container" }).append($img);
 					var $titleContainer = $("<div/>", { "class": "title-container" }).text(data.results[result].title + 
@@ -113,6 +115,9 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
  
 					$row.append([ $imgContainer, $titleContainer, $detailsContainer, $priceContainer ]);
 					results_array.push($row);
+
+					// Add a property so that we can link up the array index later
+					that.resultsMapper[$row.listing_id] = data.results[result];
 				}
 
 				// Store this array in the object for filtering sorting
