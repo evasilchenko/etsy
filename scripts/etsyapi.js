@@ -50,7 +50,7 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 	// This is the main call for getting the active items on Etsy
 	this.getActiveItems = function (params) {
 		var etsyUrl = this.baseUrl + "/listings/active.js?callback=?&api_key=" + this.getKey();
-		var $results_container = $("#js-results").text("Searching Etsy ... ");
+		SmartStore.ui.$results_container.text("Searching Etsy ... ");
 
 		for (param in params) {
 			if (!params.hasOwnProperty(param)) {
@@ -86,9 +86,12 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 					$result.text("Title:" + data.results[result].title + " Price:" + data.results[result].price);
 					results_array.push($result);
 				}
-				
-				$results_container.empty();
-				$results_container.append(results_array);
+
+				// Unfotunately have to call UI here because of the ajax call
+				SmartStore.ui.$results_container.empty();
+				SmartStore.ui.$results_container.append(results_array);
+				SmartStore.ui.$search_button.removeClass("hidden");
+				SmartStore.ui.$loading_gif.addClass("hidden");
 			} 
 			catch (ex) {
 				alert(ex.name + ": " + ex.message);

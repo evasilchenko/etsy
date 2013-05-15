@@ -8,8 +8,7 @@
 	
 	$(document).ready(function () {
 		try {
-			var ui = new SmartStore.UI();
-			ui.init();
+			SmartStore.ui.init();
 		} 
 		catch (ex) {
 			alert(ex.name + ": " + ex.message);
