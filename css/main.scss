@@ -33,6 +33,15 @@ button:hover {
 		top: 50%;
 		margin-top: -40px;
 		overflow: hidden;
+
+		#js-sort-container {
+			margin-bottom: 5px;
+
+			#js-sort-order {
+				@include border-radius(3px);
+				@include sassy-button-gradient("matte", #FF6200);
+			}
+		}
 		
 		#js-search-box {
 			height: 40px;

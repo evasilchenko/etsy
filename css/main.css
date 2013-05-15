@@ -30,6 +30,53 @@ button:hover {
   margin-top: -40px;
   overflow: hidden;
 }
+.main-container .content #js-sort-container {
+  margin-bottom: 5px;
+}
+.main-container .content #js-sort-container #js-sort-order {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFF6200', endColorstr='#FF993B00');
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff914d), color-stop(70%, #ff6200));
+  background: -webkit-linear-gradient(#ff914d, #ff6200 70%);
+  background: -moz-linear-gradient(#ff914d, #ff6200 70%);
+  background: -o-linear-gradient(#ff914d, #ff6200 70%);
+  background: linear-gradient(#ff914d, #ff6200 70%);
+  -webkit-box-shadow: #ffc099 0 1px 0 inset;
+  -moz-box-shadow: #ffc099 0 1px 0 inset;
+  box-shadow: #ffc099 0 1px 0 inset;
+  border: 1px solid #e65800;
+  color: white;
+  text-shadow: #c44b00 0 -1px 0;
+}
+.main-container .content #js-sort-container #js-sort-order:hover {
+  text-decoration: none;
+}
+.main-container .content #js-sort-container #js-sort-order:hover {
+  background-color: #e65800;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(3%, #ff8133), color-stop(75%, #e65800));
+  background: -webkit-linear-gradient(#ff8133 3%, #e65800 75%);
+  background: -moz-linear-gradient(#ff8133 3%, #e65800 75%);
+  background: -o-linear-gradient(#ff8133 3%, #e65800 75%);
+  background: linear-gradient(#ff8133 3%, #e65800 75%);
+}
+.main-container .content #js-sort-container #js-sort-order:active {
+  -webkit-box-shadow: #d65200 0 1px 2px inset;
+  -moz-box-shadow: #d65200 0 1px 2px inset;
+  box-shadow: #d65200 0 1px 2px inset;
+}
+.main-container .content #js-sort-container #js-sort-order.disabled, .main-container .content #js-sort-container #js-sort-order[disabled] {
+  opacity: 0.6;
+  background: #ff6200;
+  cursor: default;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
 .main-container .content #js-search-box {
   height: 40px;
   width: 700px;
