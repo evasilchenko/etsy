@@ -186,4 +186,22 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 
 		this.sortListByCategory(this.currentSortOn);
 	}
+
+	this.getBookmarkedItem = function (id) {
+		var etsyUrl = this.baseUrl + "/listings/{0}.js?callback=?&api_key=" + this.getKey() + "&includes=MainImage";
+		etsyUrl = etsyUrl.replace('{0}', id);
+
+		$.getJSON(etsyUrl, function (data) {
+			try {
+				if (!data.ok) {
+					throw new Error(data.error);
+				}
+				SmartStore.ui.expandContentBox();
+				SmartStore.ui.showDetails(data.results[0]);
+			}
+			catch (ex) {
+				alert(ex.name + ": " + ex.message);
+			}
+		});
+	}
 }

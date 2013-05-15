@@ -50,9 +50,32 @@ SmartStore.UI = function () {
 		})
 	}
 
+	this.showDetails = function (row) {
+		that.$details_who_made.text(row.who_made ? row.who_made : '');
+		that.$details_title.text(row.title);
+		that.$details_image_container.empty();
+		that.$details_image_container.append($("<img/>", { src: row.MainImage.url_170x135 }));
+		that.$details_description.text(row.description);
+		that.$details_price.text(row.price ? '$' + row.price : '');
+		that.$details_score.text("Score: " + row.featured_rank);
+
+		that.$results_container.addClass("hidden");
+		that.$details_container.removeClass("hidden");
+		that.$details_container.animate({
+			left: "-=870px"
+		});
+	}
+
 	// This is the entrance point of our app, this should be called
 	// after the dom is fully ready like in $(document).ready
 	this.init = function () {
+
+		var hashedId = location.hash.split('id:')[1];
+
+		if(hashedId) {
+			this.apiManager.getBookmarkedItem(hashedId);
+		}
+
 		this.$loading_gif = $("#js-loading-gif");
 		this.$search_field = $("#js-search-box");
 		this.$search_button = $("#js-search");
@@ -84,21 +107,11 @@ SmartStore.UI = function () {
 
 		// Bind to the click event all future view details buttons
 		this.$content_box.on('click', this.detailsClass, function (e) {
-			var row = that.apiManager.resultsMapper[$(this).attr('id')];
+			var id = $(this).attr('id');
+			var row = that.apiManager.resultsMapper[id];
+			window.location.hash = "id:" + id;
 
-			that.$details_who_made.text(row.who_made ? row.who_made : '');
-			that.$details_title.text(row.title);
-			that.$details_image_container.empty();
-			that.$details_image_container.append($("<img/>", { src: row.MainImage["url_170x135"] }));
-			that.$details_description.text(row.description);
-			that.$details_price.text(row.price ? '$' + row.price : '');
-			that.$details_score.text("Score: " + row.featured_rank);
-
-			that.$results_container.addClass("hidden");
-			that.$details_container.removeClass("hidden");
-			that.$details_container.animate({
-				left: "-=870px"
-			});
+			that.showDetails(row);
 		});
 
 		this.$details_close.click(function () {
@@ -107,6 +120,7 @@ SmartStore.UI = function () {
 			}, 600, function () {
 				that.$details_container.addClass("hidden");
 				that.$results_container.removeClass("hidden");
+				location.hash = '';
 			});
 		});
 
