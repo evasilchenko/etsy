@@ -3,6 +3,11 @@ etsy
 
 My Etsy store project
 
+Testing Platform
+====
+
+The project was only tested in Google Chrome so please use this browser when going through it.
+
 Things still needing to be implemented
 ====
 
