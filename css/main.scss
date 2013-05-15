@@ -7,6 +7,10 @@ body {
 	font-family: Trebuchet MS, "Trebuchet MS", Verdana, "Verdana", Arial, sans-serif;
 }
 
+button:hover {
+	cursor: pointer;
+}
+
 .hidden {
 	display: none;
 }
@@ -54,9 +58,14 @@ body {
 		.js-details {
 			float: right;
 			padding: 10px;
+			margin-top: 10px;
+			border: 1px solid #A8A8A8;
+			@include border-radius(3px);
 		}
 
 		.row {
+			border: solid #D4D4D4;
+			border-width: 0px 0px 1px 0px;
 
 			div {
 				display: inline-block;
@@ -64,15 +73,23 @@ body {
 			}
 
 			.img-container {
-				padding: 10px;
+				margin: 10px;
 				vertical-align: middle;
+				border: 1px solid #A8A8A8;
+				@include border-radius(3px);
+			}
+
+			.price-container {
+				float: right;
+				margin: 10px;
+				color: #03AB1A;
 			}
 		}
 
 		#js-results {
 			overflow: hidden;
 			max-width: 870px;
-			max-height: 520px;
+			max-height: 490px;
 
 			&.expanded {
 				overflow-y: scroll;
@@ -82,6 +99,10 @@ body {
 			.title-container {
 				max-width: 540px;
 			}
+		}
+
+		#js-evironment-container {
+			visibility: hidden;
 		}
 
 		.search-container {

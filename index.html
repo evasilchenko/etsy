@@ -11,7 +11,7 @@
 			<div class="header"></div>
 			<div class="content">
 				<div class="search-container">
-					<div>
+					<div id="js-evironment-container">
 						Current Environment:
 						<span id="js-current-environment"></span>
 					</div>
@@ -19,10 +19,12 @@
 					<button id="js-search">Search</button>
 					<img id="js-loading-gif" src="images/ajax-loader.gif" class="hidden"/>
 				</div>
-				<div class="filter-container">
-					<select id="js-sort-on"></select>
+				<div id="js-sort-container" class="hidden">
+					Sort Category: <select id="js-sort-on"></select>
+					<button id="js-sort-order">Reverse Order</button>
 				</div>
 				<div id="js-results"></div>
+				<div id="js-details-container"></div>
 			</div>
 			<div class="footer"></div>
 		</div>

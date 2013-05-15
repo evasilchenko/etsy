@@ -17,6 +17,7 @@ SmartStore.UI = function () {
 	this.detailsClass = ".js-details";
 
 	this.search = function (params) {
+		this.$sort_container.removeClass("hidden");
 		this.apiManager.getActiveItems(params);
 	}
 
@@ -49,6 +50,8 @@ SmartStore.UI = function () {
 		})
 	}
 
+	// This is the entrance point of our app, this should be called
+	// after the dom is fully ready like in $(document).ready
 	this.init = function () {
 		this.$loading_gif = $("#js-loading-gif");
 		this.$search_field = $("#js-search-box");
@@ -56,7 +59,10 @@ SmartStore.UI = function () {
 		this.$environment_container = $("#js-current-environment");
 		this.$results_container = $("#js-results");
 		this.$content_box = $(".content");
+		this.$sort_container = $("#js-sort-container");
 		this.$sort_on_select = $("#js-sort-on");
+		this.$reverse_sort_order = $("#js-sort-order");
+		this.$details_container = $("#js-details-container");
 		this.$environment_container.text(this.apiManager.mode.title);
 
 		// Search the Etsy api after the search button is clicked
@@ -68,10 +74,13 @@ SmartStore.UI = function () {
 			setTimeout(that.search(that.params), 700);
 		});
 
+		// Bind to the click event all future view details buttons
 		this.$content_box.on('click', this.detailsClass, function (e) {
 			alert(that.apiManager.results[$(this).attr('id')].title);
 		});
 
+		// Go through and set the options for the categories sort using
+		// the predefined values in our etsyapi.js
 		var options_array = [], x;
 
 		for(x = 0; x < SmartStore.EtsyApi.sort_options.sort_on_options.length; x++) {
@@ -84,7 +93,21 @@ SmartStore.UI = function () {
 		}
 
 		this.$sort_on_select.append(options_array);
+
+		if (SmartStore.EtsyApi.params.keywords.replace(/\s+/, "").length > 0) {
+			this.$sort_container.removeClass("hidden");
+		}
+
+		// Set the event handlers for the sort controls
+		this.$sort_on_select.change(function () {
+			that.apiManager.sortListByCategory(this.value);
+		});
+
+		this.$reverse_sort_order.click(function () {
+			that.apiManager.reverseSortOrder();
+		});
 	}
 }
 
+// Create a globally accessible instance of the UI object
 SmartStore.ui = new SmartStore.UI();

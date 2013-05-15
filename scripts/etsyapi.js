@@ -41,7 +41,10 @@ SmartStore.EtsyApi.params = {
 SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 	this.mode = mode || SmartStore.EtsyApi.modes.sandbox;
 	this.baseUrl = this.mode.url;
-	this.results = {};
+	this.results = [];
+	this.rowClass = "row";
+	this.currentSortOn = SmartStore.EtsyApi.sort_options.sort_on_options[0];
+	this.currentOrderOn = SmartStore.EtsyApi.sort_options.sort_order_options[0];
 
 	var _key = key || "w7ccqvpohft8w1464vjulwts", that = this;
 
@@ -64,6 +67,7 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 			// so we omit it in our call if the passed in value is empty
 			if (param == "keywords" && 
 				params[param].replace(/\s+/, "").length == 0) {
+				SmartStore.ui.$sort_container.addClass("hidden");
 				continue;
 			}
 
@@ -87,23 +91,32 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 						continue;
 					}
 
-					var $row = $("<div/>", { "class": "row" });
+					var $row = $("<div/>", { "class": that.rowClass, id: "row-" + data.results[result].listing_id });
+					$row.created_on = data.results[result].creation_tsz;
+					$row.score = data.results[result].featured_rank;
+					$row.price = data.results[result].price;
 					var $img = $("<img/>", { "src": data.results[result].MainImage.url_75x75 });
 					var $imgContainer = $("<div/>", { "class": "img-container" }).append($img);
-					var $titleContainer = $("<div/>", { "class": "title-container" }).text(data.results[result].title);
-					var $priceContainer = $("<div/>", { "class": "price-container" }).text(data.results[result].price);
+					var $titleContainer = $("<div/>", { "class": "title-container" }).text(data.results[result].title + 
+																							" Score: " +
+																							$row.score +
+																							" Created: " + 
+																							$row.created_on);
+
+					var $priceContainer = $("<div/>", { "class": "price-container" }).text(data.results[result].price ? 
+																							'$' + data.results[result].price : '');
 					var $detailsContainer = $("<button/>", { 
 						text: "Details",
 						"class": "js-details", 
 						id: data.results[result].listing_id 
 					});
  
-					$row.append([ $imgContainer, $titleContainer, $priceContainer, $detailsContainer ]);
+					$row.append([ $imgContainer, $titleContainer, $detailsContainer, $priceContainer ]);
 					results_array.push($row);
-
-					// Add the result to a property which will be used to access the details of this row
-					that.results[data.results[result].listing_id] = data.results[result];
 				}
+
+				// Store this array in the object for filtering sorting
+				that.results = results_array;
 
 				// Unfotunately have to call UI here because of the ajax call
 				SmartStore.ui.$results_container.append(results_array);
@@ -115,5 +128,57 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 			}
 			
 		});
+	}
+
+	// This call is made when the user changes a sort option
+	this.sortListByCategory = function (category) {
+		var sortedList;
+		SmartStore.EtsyApi.params.sort_on = this.currentSortOn = category;
+		SmartStore.EtsyApi.params.sort_order = this.currentOrderOn;
+
+		if (this.currentOrderOn == SmartStore.EtsyApi.sort_options.sort_order_options[0]) {
+			sortedList = this.results.sort(function (a, b) {
+				if(!a[category] && !b[category]) {
+					return 0;
+				}
+				else if (!a[category] && b[category]) {
+					return -1;
+				} 
+				else if(a[category] && !b[category]) {
+					return 1;
+				}
+
+				return parseFloat(a[category]) - parseFloat(b[category]);
+			});
+		}
+		else {
+			sortedList = this.results.sort(function (a, b) {
+				if(!a[category] && !b[category]) {
+					return 0;
+				}
+				else if (a[category] && !b[category]) {
+					return -1;
+				} 
+				else if(!a[category] && b[category]) {
+					return 1;
+				}
+
+				return parseFloat(b[category]) - parseFloat(a[category]);
+			});
+		}
+		
+		SmartStore.ui.$results_container.empty();
+		SmartStore.ui.$results_container.append(sortedList);
+	}
+
+	this.reverseSortOrder = function () {
+		if(this.currentOrderOn == SmartStore.EtsyApi.sort_options.sort_order_options[0]) {
+			this.currentOrderOn = SmartStore.EtsyApi.sort_options.sort_order_options[1];
+		}
+		else {
+			this.currentOrderOn = SmartStore.EtsyApi.sort_options.sort_order_options[0];
+		}
+
+		this.sortListByCategory(this.currentSortOn);
 	}
 }

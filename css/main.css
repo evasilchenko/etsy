@@ -5,6 +5,10 @@ body {
   font-family: Trebuchet MS, "Trebuchet MS", Verdana, "Verdana", Arial, sans-serif;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 .hidden {
   display: none;
 }
@@ -52,19 +56,41 @@ body {
 .main-container .content .js-details {
   float: right;
   padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #A8A8A8;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.main-container .content .row {
+  border: solid #D4D4D4;
+  border-width: 0px 0px 1px 0px;
 }
 .main-container .content .row div {
   display: inline-block;
   margin: 0 10px;
 }
 .main-container .content .row .img-container {
-  padding: 10px;
+  margin: 10px;
   vertical-align: middle;
+  border: 1px solid #A8A8A8;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.main-container .content .row .price-container {
+  float: right;
+  margin: 10px;
+  color: #03AB1A;
 }
 .main-container .content #js-results {
   overflow: hidden;
   max-width: 870px;
-  max-height: 520px;
+  max-height: 490px;
 }
 .main-container .content #js-results.expanded {
   overflow-y: scroll;
@@ -72,6 +98,9 @@ body {
 }
 .main-container .content #js-results .title-container {
   max-width: 540px;
+}
+.main-container .content #js-evironment-container {
+  visibility: hidden;
 }
 .main-container .content .search-container {
   padding: 10px 0px;
