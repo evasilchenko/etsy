@@ -11,9 +11,10 @@ SmartStore.UI = function () {
 	var that = this;
 	this.apiManager = new SmartStore.EtsyApi.ApiCalls(SmartStore.EtsyApi.modes.production);
 	this.params = SmartStore.EtsyApi.params;
-	this.heightDifference = "540px";
-	this.marginDifference = "290px";
+	this.heightDifference = "520px";
+	this.marginDifference = "280px";
 	this.contentExpanded = false;
+	this.detailsClass = ".js-details";
 
 	this.search = function (params) {
 		this.apiManager.getActiveItems(params);
@@ -55,6 +56,7 @@ SmartStore.UI = function () {
 		this.$environment_container = $("#js-current-environment");
 		this.$results_container = $("#js-results");
 		this.$content_box = $(".content");
+		this.$sort_on_select = $("#js-sort-on");
 		this.$environment_container.text(this.apiManager.mode.title);
 
 		// Search the Etsy api after the search button is clicked
@@ -65,9 +67,24 @@ SmartStore.UI = function () {
 			that.expandContentBox();
 			setTimeout(that.search(that.params), 700);
 		});
-	}
 
-	return this;
+		this.$content_box.on('click', this.detailsClass, function (e) {
+			alert(that.apiManager.results[$(this).attr('id')].title);
+		});
+
+		var options_array = [], x;
+
+		for(x = 0; x < SmartStore.EtsyApi.sort_options.sort_on_options.length; x++) {
+			var $option = $("<option/>", { 
+				text: SmartStore.EtsyApi.sort_options.sort_on_options[x],
+				value: SmartStore.EtsyApi.sort_options.sort_on_options[x]
+			});
+
+			options_array.push($option);
+		}
+
+		this.$sort_on_select.append(options_array);
+	}
 }
 
 SmartStore.ui = new SmartStore.UI();

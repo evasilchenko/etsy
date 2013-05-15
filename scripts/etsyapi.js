@@ -41,8 +41,9 @@ SmartStore.EtsyApi.params = {
 SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 	this.mode = mode || SmartStore.EtsyApi.modes.sandbox;
 	this.baseUrl = this.mode.url;
+	this.results = {};
 
-	var _key = key || "w7ccqvpohft8w1464vjulwts";
+	var _key = key || "w7ccqvpohft8w1464vjulwts", that = this;
 
 	this.getKey = function () {
 		return _key;
@@ -91,9 +92,17 @@ SmartStore.EtsyApi.ApiCalls = function (mode, key) {
 					var $imgContainer = $("<div/>", { "class": "img-container" }).append($img);
 					var $titleContainer = $("<div/>", { "class": "title-container" }).text(data.results[result].title);
 					var $priceContainer = $("<div/>", { "class": "price-container" }).text(data.results[result].price);
-
-					$row.append([ $imgContainer, $titleContainer, $priceContainer ]);
+					var $detailsContainer = $("<button/>", { 
+						text: "Details",
+						"class": "js-details", 
+						id: data.results[result].listing_id 
+					});
+ 
+					$row.append([ $imgContainer, $titleContainer, $priceContainer, $detailsContainer ]);
 					results_array.push($row);
+
+					// Add the result to a property which will be used to access the details of this row
+					that.results[data.results[result].listing_id] = data.results[result];
 				}
 
 				// Unfotunately have to call UI here because of the ajax call

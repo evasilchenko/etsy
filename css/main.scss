@@ -1,7 +1,10 @@
+@import "compass/css3/border-radius";
+
 body {
 	margin: 0px;
 	padding: 0px;
 	text-align: center;
+	font-family: Trebuchet MS, "Trebuchet MS", Verdana, "Verdana", Arial, sans-serif;
 }
 
 .hidden {
@@ -21,13 +24,36 @@ body {
 
 	.content {
 		position: absolute;
-		height: 60px;
+		height: 80px;
 		top: 50%;
-		margin-top: -30px;
+		margin-top: -40px;
 		overflow: hidden;
 		
 		#js-search-box {
+			height: 40px;
 			width: 800px;
+			padding: 10px;
+			border: 1px solid #A8A8A8;
+			@include border-radius(3px);
+		}
+
+		#js-search {
+			padding: 10px;
+			border: 1px solid #A8A8A8;
+			@include border-radius(3px);
+
+			&:hover {
+
+			}
+		}
+
+		#js-loading-gif {
+			vertical-align: middle;
+		}
+
+		.js-details {
+			float: right;
+			padding: 10px;
 		}
 
 		.row {
@@ -45,13 +71,17 @@ body {
 
 		#js-results {
 			overflow: hidden;
+			max-width: 870px;
+			max-height: 520px;
 
 			&.expanded {
 				overflow-y: scroll;
 				overflow-x: hidden;
 			}
-			
-			max-height: 540px;
+
+			.title-container {
+				max-width: 540px;
+			}
 		}
 
 		.search-container {
